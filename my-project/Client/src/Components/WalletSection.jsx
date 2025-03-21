@@ -1,74 +1,8 @@
-// "use client";
-
-// import { useState } from "react";
-// import crypto from "../assets/crypto.png"
-
-// const WalletSection = () => {
-//   const [activeTab, setActiveTab] = useState("mobile");
-
-//   return (
-//     <div className="bg-white p-8">
-//       <div className="max-w-3xl mx-auto">
-//         <div className="bg-gray-100 p-12 rounded-3xl">
-//           <h2 className="text-3xl font-bold mb-4">
-//             Your one-stop, Web3 wallet
-//           </h2>
-//           <p className="text-gray-700 mb-8">
-//             Buy, sell, and swap crypto, earn rewards, manage NFTs, and discover
-//             DApps, all in one place.
-//           </p>
-
-//           {/* Tabs */}
-//           <div className="inline-flex p-1 bg-white border border-gray-200 rounded-full mb-8">
-//             <button
-//               className={`px-8 py-3 rounded-full text-sm font-medium transition-colors ${
-//                 activeTab === "mobile"
-//                   ? "bg-blue-600 text-white"
-//                   : "text-gray-700"
-//               }`}
-//               onClick={() => setActiveTab("mobile")}
-//             >
-//               Mobile
-//             </button>
-//             <button
-//               className={`px-8 py-3 rounded-full text-sm font-medium transition-colors ${
-//                 activeTab === "extension"
-//                   ? "bg-blue-600 text-white"
-//                   : "text-gray-700"
-//               }`}
-//               onClick={() => setActiveTab("extension")}
-//             >
-//               Extension
-//             </button>
-//           </div>
-
-//           {/* Download Button */}
-//           <div>
-//             <a
-//               href="#"
-//               className="inline-block px-8 py-3 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-//             >
-//               {activeTab === "mobile"
-//                 ? "Download Mobile App"
-//                 : "Install Browser Extension"}
-//             </a>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default WalletSection;
-
-
-"use client"
-
-import { useState } from "react"
-import crypto from "../assets/crypto.png"
+import { useState } from "react";
+import crypto from "../assets/crypto.png";
 
 const WalletSection = () => {
-  const [activeTab, setActiveTab] = useState("mobile")
+  const [activeTab, setActiveTab] = useState("mobile");
 
   return (
     <div className="bg-white p-8">
@@ -76,16 +10,21 @@ const WalletSection = () => {
         <div className="bg-gray-100 p-12 rounded-3xl flex flex-col md:flex-row items-center gap-8">
           {/* Left content */}
           <div className="flex-1">
-            <h2 className="text-3xl font-bold mb-4">Your one-stop, Web3 wallet</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              Your one-stop, Web3 wallet
+            </h2>
             <p className="text-gray-700 mb-8">
-              Buy, sell, and swap crypto, earn rewards, manage NFTs, and discover DApps, all in one place.
+              Buy, sell, and swap crypto, earn rewards, manage NFTs, and
+              discover DApps, all in one place.
             </p>
 
             {/* Tabs */}
             <div className="inline-flex p-1 bg-white border border-gray-200 rounded-full mb-8">
               <button
                 className={`px-8 py-3 rounded-full text-sm font-medium transition-colors ${
-                  activeTab === "mobile" ? "bg-blue-600 text-white" : "text-gray-700"
+                  activeTab === "mobile"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700"
                 }`}
                 onClick={() => setActiveTab("mobile")}
               >
@@ -93,7 +32,9 @@ const WalletSection = () => {
               </button>
               <button
                 className={`px-8 py-3 rounded-full text-sm font-medium transition-colors ${
-                  activeTab === "extension" ? "bg-blue-600 text-white" : "text-gray-700"
+                  activeTab === "extension"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700"
                 }`}
                 onClick={() => setActiveTab("extension")}
               >
@@ -107,7 +48,9 @@ const WalletSection = () => {
                 href="#"
                 className="inline-block px-8 py-3 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
               >
-                {activeTab === "mobile" ? "Download Mobile App" : "Install Browser Extension"}
+                {activeTab === "mobile"
+                  ? "Download Mobile App"
+                  : "Install Browser Extension"}
               </a>
             </div>
           </div>
@@ -125,8 +68,7 @@ const WalletSection = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default WalletSection
-
+export default WalletSection;
