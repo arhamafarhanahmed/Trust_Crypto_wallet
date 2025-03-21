@@ -2,19 +2,20 @@
 
 "use client"
 import { motion } from "framer-motion"
+import hand from "../assets/hand-removebg-preview.png"
 
 const CryptoSection = () => {
   return (
-    <div className="bg-white mb-12 px-[10%] ">
+    <div className="bg-white px-[10%] pb-0">
       <section
         className="w-full rounded-3xl py-16"
         style={{
           background: "linear-gradient(to bottom, #fff9c4, #ffb6c1)",
         }}
       >
-        <div className="max-w-6xl  mx-auto px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {/* Heading */}
-          <div className="text-center  mb-12">
+          <div className="text-center mb-12">
             <h1 className="text-5xl font-bold mb-4">Simple. Seamless.</h1>
             <p className="text-xl max-w-3xl mx-auto">
               Enjoy a smooth mobile app and desktop experience with easy-to-use, powerful tools to support your entire
@@ -47,10 +48,10 @@ const CryptoSection = () => {
                 </div>
               </div>
 
-              {/* Right Image */}
+              {/* Right Image - Using hand image */}
               <div className="md:w-1/2 relative p-4">
                 <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-kwe3Q8Nu3DjHbd73nUCjWNQou9q3Xy.png"
+                  src={hand || "/placeholder.svg"}
                   alt="Hand holding phone with QR code"
                   className="w-full h-full object-contain object-center rounded-3xl"
                 />
