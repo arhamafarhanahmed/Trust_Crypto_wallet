@@ -5,6 +5,9 @@ import PlatformFeatures from "./Components/PlateformFeautures";
 import CryptoSection from "./Components/CryptoSection";
 import SecuritySection from "./Components/SecuritySection";
 import WalletSection from "./Components/WalletSection";
+import ExperiencedSection from "./Components/ExperiencedSection";
+import BuildingTrust from "./Components/BuildingTrust";
+import EndSection from "./Components/EndSection";
 
 const App = () => {
   return (
@@ -15,6 +18,9 @@ const App = () => {
       <CryptoSection />
       <SecuritySection />
       <WalletSection />
+      <ExperiencedSection/>
+      <BuildingTrust/>
+      <EndSection/>
     </div>
   );
 };
