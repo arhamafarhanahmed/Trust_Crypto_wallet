@@ -1,90 +1,95 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { Trash2, RefreshCcw, AlertCircle } from "lucide-react"
+import { useState, useEffect } from "react";
+import { Trash2, RefreshCcw, AlertCircle } from "lucide-react";
 
 const Dashboard = () => {
-  const [content, setContent] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [deleteLoading, setDeleteLoading] = useState(null)
+  const [content, setContent] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(null);
 
   // Fetch Data from API
   const fetchData = async () => {
     try {
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
 
-      const response = await fetch("http://localhost:8005/api/get-texts")
+      const response = await fetch("http://localhost:8005/api/get-texts");
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch data: ${response.status}`)
+        throw new Error(`Failed to fetch data: ${response.status}`);
       }
 
-      const result = await response.json()
-      console.log("Fetched Result:", result)
+      const result = await response.json();
+      console.log("Fetched Result:", result);
 
       if (result.texts && Array.isArray(result.texts)) {
-        setContent(result.texts)
+        setContent(result.texts);
       } else if (Array.isArray(result)) {
-        setContent(result)
+        setContent(result);
       } else {
-        console.error("Invalid data structure:", result)
-        setError("Invalid data format received from server")
+        console.error("Invalid data structure:", result);
+        setError("Invalid data format received from server");
       }
     } catch (error) {
-      console.error("Error fetching data:", error)
-      setError(error.message || "Failed to fetch data")
+      console.error("Error fetching data:", error);
+      setError(error.message || "Failed to fetch data");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   // Delete Text Function
   const handleDelete = async (id) => {
     try {
-      setDeleteLoading(id)
+      setDeleteLoading(id);
 
-      const response = await fetch(`http://localhost:8005/api/delete-text/${id}`, {
-        method: "DELETE",
-      })
+      const response = await fetch(
+        `http://localhost:8005/api/delete-text/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-      const text = await response.text() // Read response as text
+      const text = await response.text(); // Read response as text
 
-      let result
+      let result;
       try {
-        result = JSON.parse(text) // Try parsing JSON
+        result = JSON.parse(text); // Try parsing JSON
       } catch (err) {
-        console.error("Invalid JSON response:", text)
-        alert("Failed to delete: Invalid server response")
-        return
+        console.error("Invalid JSON response:", text);
+        alert("Failed to delete: Invalid server response");
+        return;
       }
 
-      console.log("Delete response:", result)
+      console.log("Delete response:", result);
 
       if (response.ok) {
         // Remove item from UI
         setContent((prevContent) =>
           prevContent.filter((item) => {
-            const itemId = item._id || item.id
-            return itemId !== id
+            const itemId = item._id || item.id;
+            return itemId !== id;
           })
-        )
+        );
       } else {
-        console.error("Failed to delete text:", result.error || result.message)
-        alert(`Failed to delete: ${result.error || result.message || "Unknown error"}`)
+        console.error("Failed to delete text:", result.error || result.message);
+        alert(
+          `Failed to delete: ${
+            result.error || result.message || "Unknown error"
+          }`
+        );
       }
     } catch (error) {
-      console.error("Error deleting text:", error)
-      alert(`Error deleting: ${error.message || "Unknown error"}`)
+      console.error("Error deleting text:", error);
+      alert(`Error deleting: ${error.message || "Unknown error"}`);
     } finally {
-      setDeleteLoading(null)
+      setDeleteLoading(null);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -116,7 +121,9 @@ const Dashboard = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID
+                </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Content
                 </th>
@@ -127,13 +134,17 @@ const Dashboard = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {content.map((item) => {
-                const id = item._id || item.id
-                const text = item.content || item.text || String(item)
+                const id = item._id || item.id;
+                const text = item.content || item.text || String(item);
 
                 return (
                   <tr key={id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{text}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {id}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {text}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <button
                         onClick={() => handleDelete(id)}
@@ -149,7 +160,7 @@ const Dashboard = () => {
                       </button>
                     </td>
                   </tr>
-                )
+                );
               })}
             </tbody>
           </table>
@@ -160,8 +171,7 @@ const Dashboard = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
-
+export default Dashboard;
