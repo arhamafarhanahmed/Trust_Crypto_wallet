@@ -8,6 +8,7 @@ import WalletSection from "./Components/WalletSection";
 import ExperiencedSection from "./Components/ExperiencedSection";
 import BuildingTrust from "./Components/BuildingTrust";
 import EndSection from "./Components/EndSection";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => {
   return (
@@ -21,6 +22,12 @@ const App = () => {
       <ExperiencedSection/>
       <BuildingTrust/>
       <EndSection/>
+
+      <Routes>
+      <Route path="/" element={<Home />} />
+      <Routes/>
+
+      
     </div>
   );
 };
