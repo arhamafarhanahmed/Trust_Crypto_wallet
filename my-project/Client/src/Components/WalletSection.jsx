@@ -72,3 +72,4 @@ const WalletSection = () => {
 };
 
 export default WalletSection;
+
