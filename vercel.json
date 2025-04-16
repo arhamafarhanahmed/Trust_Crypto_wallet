@@ -1,0 +1,8 @@
+{
+    "buildCommand": "cd client && npm run build",
+    "outputDirectory": "client/build",
+    "routes": [
+      { "src": "/api/(.*)", "dest": "/api/$1" },
+      { "src": "/(.*)", "dest": "/client/build/$1" }
+    ]
+  }
